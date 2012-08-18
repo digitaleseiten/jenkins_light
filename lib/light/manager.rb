@@ -2,7 +2,7 @@ module Light
 
   class Manager
     STATUS_LIGHT_MAPPING = {
-      "aborted"  => "off",
+      "aborted"  => "turn_off",
       "stable"   => "green",
       "building" => "blue",
       "failed"   => "red",
