@@ -1,0 +1,31 @@
+#!/usr/bin/env ruby
+
+require 'github_api'
+require 'usb'
+require "rexml/document"
+require 'open-uri'
+require 'net/http'
+require "net/https"
+require 'yaml'
+
+PROJECT_ROOT = File.expand_path(File.dirname(__FILE__))
+
+require PROJECT_ROOT + '/lib/timer'
+require PROJECT_ROOT + '/lib/openssl_patch'
+require PROJECT_ROOT + '/lib/monitor'
+require PROJECT_ROOT + '/lib/jenkins/monitor'
+require PROJECT_ROOT + '/lib/jenkins/status'
+require PROJECT_ROOT + '/lib/jenkins/activity'
+require PROJECT_ROOT + '/lib/github/monitor'
+require PROJECT_ROOT + '/lib/light/controller'
+require PROJECT_ROOT + '/lib/light/manager'
+
+@light_manager = Light::Manager.new
+
+while true != false
+  # this makes all registered timers work
+  # a cheap copy of ios timer behaviour
+  Timer.tick
+  @light_manager.show_status
+  print "."
+end
