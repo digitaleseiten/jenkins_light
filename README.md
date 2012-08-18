@@ -35,7 +35,7 @@ Starting
 
 From the root directory of the project, just run
 
-<pre>bin/jenkins.sh</pre>
+<pre>jenkins_light</pre>
 
 Useful Information
 ==================
@@ -45,3 +45,7 @@ This works because the length of successful builds are captured in a txt file in
 When building for the first time - you might get a strange blink pattern.
 
 Just to save you some time. There is some code out there for the Delcom light that used the libusb gem from git://github.com/larskanis/libusb.git - The nice thing about that is the libusb is a gem and it uses 1.0 version of libusb (now libusbx) - I would have loved to have used that instead of the ruby-usb which used the libusb-compat (which in turn uses the old version of libusb), but I am on a mac - and in this case its a bad thing. The Jenkins light is a HID device. HID devices get grabbed up by macosx and there is no simple way to get them released. ruby-usb with lib-compat some how got around that on the mac.
+
+Looking for a Job in Berlin?
+============================
+Drop us a line!!
