@@ -16,13 +16,19 @@ The light is:
 Installation
 ============
 
-You need to install ruby-usb
+You need to install ruby-usb first
 
 <pre>
 prompt$: git clone git@github.com:digitaleseiten/ruby_usb.git
 </pre>
 
 <b>Important</b>: Follow the installation instructions in the ruby-usb Readme file.
+
+Then in a seperate folder.
+
+<pre>
+prompt$: git clone git@github.com:digitaleseiten/jenkins_light.git
+</pre>
 
 Configuration
 =============
