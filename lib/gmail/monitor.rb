@@ -5,11 +5,11 @@ module Gmail
 
     def initialize(default_poll_interval)
       @feature_enabled = credential_for :feature_enabled
-      @pop3_address    = credential_for :pop3_address
-      @pop3_username   = credential_for :pop3_username
-      @pop3_password   = credential_for :pop3_password
-      @pop3_enable_ssl = credential_for :pop3_enable_ssl
-      @pop3_port       = (credential_for :pop3_port,      @feature_enabled).to_i
+      @pop3_address    = credential_for :pop3_address, @feature_enabled
+      @pop3_username   = credential_for :pop3_username, @feature_enabled
+      @pop3_password   = credential_for :pop3_password, @feature_enabled
+      @pop3_enable_ssl = credential_for :pop3_enable_ssl, @feature_enabled
+      @pop3_port       = (credential_for :pop3_port, @feature_enabled).to_i
 
       super(default_poll_interval)
     end
@@ -23,7 +23,6 @@ module Gmail
 
     def poll_mail
       return unless @feature_enabled
-      puts "<poll mail>"
 
       Thread.new do
         mail.all.each do |email|
