@@ -22,12 +22,12 @@ require PROJECT_ROOT + '/lib/monitor'
 require PROJECT_ROOT + '/lib/gmail/monitor'
 require PROJECT_ROOT + '/lib/github/monitor'
 require PROJECT_ROOT + '/lib/jenkins/monitor'
-require PROJECT_ROOT + '/lib/light/manager'
 require PROJECT_ROOT + '/lib/light/controller'
 require PROJECT_ROOT + '/lib/jenkins/status'
 require PROJECT_ROOT + '/lib/jenkins/activity'
+require PROJECT_ROOT + '/lib/manager'
 
-@light_manager = Light::Manager.new
+@manager = Manager.new
 # just speaking for the user here i.e. we want the software to behave as if the
 # the user asked this
 HisMastersVoice.instance.said_this('whats up')
@@ -36,5 +36,5 @@ while true != false
   # this makes all registered timers work
   # a cheap copy of ios timer behaviour
   Timer.tick
-  @light_manager.light_the_way
+  @manager.light_the_way
 end
