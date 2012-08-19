@@ -10,6 +10,7 @@
 data/*.txt
 jenkins_credentials.yml
 github_credentials.yml
+gmail_credentials.yml
 config/database.yml
 config/database.yml.macMysql
 config/database.yml.old

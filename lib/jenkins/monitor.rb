@@ -2,9 +2,10 @@ module Jenkins
 
   class Monitor < ::Monitor
     attr_reader :status, :activity
+
     CREDENTAILS = YAML::load( File.open(  File.expand_path(File.dirname(__FILE__) + '../../../config/jenkins_credentials.yml') ) )["setup"]
 
-    def initialize
+    def initialize(default_poll_interval)
       @username     = CREDENTAILS["username"]
       @password     = CREDENTAILS["password"]
       @url          = CREDENTAILS["url"]
@@ -18,7 +19,7 @@ module Jenkins
       @activity     = Activity.new(@build_name, @status)
       @timer        = Timer.new(1.0) { @activity.update }
 
-      super
+      super(default_poll_interval)
     end
 
     # this gets called from the super class through a timer every 10 seconds

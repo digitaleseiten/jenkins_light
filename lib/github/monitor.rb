@@ -3,20 +3,22 @@ module Github
   class Monitor < ::Monitor
     CREDENTAILS = YAML::load( File.open(  File.expand_path(File.dirname(__FILE__) + '../../../config/github_credentials.yml') ) )["setup"]
 
-    def initialize
+    def initialize(default_poll_interval)
+      @feature_enabled  = CREDENTAILS["feature_enabled"]
       @username         = CREDENTAILS["username"]
       @password         = CREDENTAILS["password"]
       @repository_owner = CREDENTAILS["repository_owner"]
       @repository_name  = CREDENTAILS["repository_name"]
 
-      super
+      super(default_poll_interval)
     end
 
     def poll_now
       @timer.start
-
-      Thread.new do
-        @pull_requests = github.pull_requests.list @repository_owner, @repository_name, :mime_type => :full
+      if @feature_enabled
+        Thread.new do
+          @pull_requests = github.pull_requests.list @repository_owner, @repository_name, :mime_type => :full
+        end
       end
     end
 

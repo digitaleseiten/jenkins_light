@@ -16,6 +16,7 @@ module Light
 
     def initialize(default_blink_interval)
       @power           = 1 # default send power to the light for the blinker
+      @power_on        = true
       @blink_timer     = Timer.new(default_blink_interval) { blink }
       @blink_timer.start
     end
@@ -40,12 +41,18 @@ module Light
     def do_nothing; end
 
     def turn_on
-      color_key = @current_color || ORANGE
-      send_data("\x65\x0C#{color_key}\xFF\x00\x00\x00\x00")
+      if !@power_on
+        @power_on = true
+        color_key = @current_color || ORANGE
+        send_data("\x65\x0C#{color_key}\xFF\x00\x00\x00\x00")
+      end
     end
 
     def turn_off
-      send_data("\x65\x0C#{OFF}\xFF\x00\x00\x00\x00")
+      if @power_on
+        @power_on = false
+        send_data("\x65\x0C#{OFF}\xFF\x00\x00\x00\x00")
+      end
     end
 
     private

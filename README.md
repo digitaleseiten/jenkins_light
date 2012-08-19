@@ -1,17 +1,23 @@
 Jenkins Build Light
 ===================
- 
+
 For the Delcom USB light model 904008
 
 Changes the status of a Delcom USB light depending on the status of a
-jenkins build and when pull requests are pending for a repository.
+Jenkins build and when pull requests are pending for a repository.
 
-The light is:
-- orange untill the data from jenkins arrives for the first time (only happens for about the first 10 seconds after starting jenkins.sh)
-- green when the last build was a sucess
-- blinky green when a pull request is pending
-- blinky blue when jenkins is building (it blinks faster the nearer the build get to completion)
-- blinky red when the last build failed
+The light statuses:
+- Off until the data from Jenkins arrives for the first time (only happens for about the first 10 seconds after starting the jenkins_light program)
+- Off when you abort the build
+- Green when the last build was a sucess
+- Blinky Green when a pull request is pending
+- Blinky Blue when Jenkins is building (it blinks faster the nearer the build get to completion)
+- Blinky Red when the last build failed
+- Orange when is does now understand the Jenkins status (unlikely but possible)
+
+Some times you want the light to turn off (maybe because it is driving you crazy blinking red since the last build failed),
+of course you could just unplug it, bit where is the fun in that - so instead, just send it either an email with
+shut up or wake up in the subject to turn it off, or back on again.
 
 Installation
 ============
@@ -33,8 +39,12 @@ prompt$: git clone git@github.com:digitaleseiten/jenkins_light.git
 Configuration
 =============
 
-There are two example.yml files in the root folder. One for Github and one for Jenkins.
-Enter in your information and rename them to <b>github_credentials.yml</b> and <b>jenkins_credentials.yml</b> respectivly
+There are three example.yml files in the root folder. One for Github and one for Jenkins.
+Enter in your information and rename them to <b>github_credentials.yml</b>, <b>jenkins_credentials.yml</b>
+and <b>gmail_credentials.yml</b> respectively. (I am sure that i works for all other pop mail providers, but I only tried it out with gmail)
+
+NOTE: If you don't want to use the github or the gmail feature, then you can disable them in your github_credentials.yml and
+gmail_credentials.yml files.
 
 Starting
 =========
