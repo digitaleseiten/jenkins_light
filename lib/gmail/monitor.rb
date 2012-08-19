@@ -9,7 +9,8 @@ module Gmail
     end
 
     def poll_now
-      @timer.start
+      puts "<poll gmail>"
+      @timer.start(@default_poll_interval)
       poll_mail if @feature_enabled
     end
 

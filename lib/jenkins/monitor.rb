@@ -24,7 +24,9 @@ module Jenkins
 
     # this gets called from the super class through a timer every 10 seconds
     def poll_now
-      @timer.start
+      puts "<poll jenkins>"
+
+      @timer.start(@default_poll_interval)
 
       Thread.new do
         @http.start() do |http|
