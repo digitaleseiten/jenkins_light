@@ -20,15 +20,15 @@ shut up or wake up in the subject to turn it off, or back on again.
 
 Here are some commands that you can send it via a message
 
-"what are you doing" - lets it get on with doing what it should be doing
-"how are you"        - causes a fast succession of 10 blinks to tell you that it is a linve
-"shut up"            - turns off the light and stops doing anything else that might annoy you
-"red light"          - turns on the red light
-"green light"        - turns on the green light,
-"blue light"         - turns on the blue light,
-"orange light"       - turns on the red and green light
-"turn off"           - turns off the light
-"turn on"            - turns on the light with the last know color
+- "what are you doing" - lets it get on with doing what it should be doing
+- "how are you"        - causes a fast succession of 10 blinks to tell you that it is a linve
+- "shut up"            - turns off the light and stops doing anything else that might annoy you
+- "red light"          - turns on the red light
+- "green light"        - turns on the green light,
+- "blue light"         - turns on the blue light,
+- "orange light"       - turns on the red and green light
+- "turn off"           - turns off the light
+- "turn on"            - turns on the light with the last know color
 
 Installation
 ============
