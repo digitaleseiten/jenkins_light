@@ -47,8 +47,7 @@ module Jenkins
       @_current_build_time = Time.now.to_f - @start_build_time
     end
 
-    def build_aborted
-    end
+    def build_aborted; end
 
     def software_started_during_build
       @_build_started_from_beginning = false

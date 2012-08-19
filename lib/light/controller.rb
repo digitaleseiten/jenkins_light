@@ -15,16 +15,21 @@ module Light
     OFF    = "\x00"
 
     def initialize(default_blink_interval)
-      @power           = 1 # default send power to the light for the blinker
-      @power_on        = true
-      @blink_timer     = Timer.new(default_blink_interval) { blink }
+      @blink_power        = 1 # default send power to the light for the blinker
+      @blink_timer        = Timer.new(default_blink_interval) { timer_blink }
       @blink_timer.start
     end
 
-    def blink
+    def manual_blink(user_options = {:number_of_times => 2, :interval => 1.0 })
+      current_power_on = @power_on
+      user_options[:number_of_times].times {|count| light_controller.turn_off and sleep user_options[:interval] and light_controller.turn_on }
+      @power_on = current_power_on
+    end
+
+    def timer_blink
       @blink_timer.start(@_blink_interval)
       if @blink_please
-        (@power ^= 1) == 1 ? turn_on : turn_off
+        (@blink_power ^= 1) == 1 ? turn_on : turn_off
       end
     end
 
@@ -33,23 +38,26 @@ module Light
       @_blink_interval = interval < 0.01 ? 0 : interval
     end
 
-    def green;    light GREEN;  end
-    def blue;     light BLUE;   end
-    def red;      light RED;    end
-    def orange;   light ORANGE; end
+    # The methods that accept user_options can be used directly
+    # by the user for instance through an email message
+    def green(user_options={});    light GREEN;  end
+    def blue(user_options={});     light BLUE;   end
+    def red(user_options={});      light RED;    end
+    def orange(user_options={});   light ORANGE; end
+    def do_nothing(user_options={}); end
 
-    def do_nothing; end
-
-    def turn_on
+    def turn_on(user_options={})
       if !@power_on
         @power_on = true
+        puts "light on"
         color_key = @current_color || ORANGE
         send_data("\x65\x0C#{color_key}\xFF\x00\x00\x00\x00")
       end
     end
 
-    def turn_off
+    def turn_off(user_options={})
       if @power_on
+        puts "light off"
         @power_on = false
         send_data("\x65\x0C#{OFF}\xFF\x00\x00\x00\x00")
       end
@@ -60,6 +68,7 @@ module Light
     # only send data to the light when the color should change
     def light(color_key)
       if color_key && color_key != @current_color
+        puts "light: #{color_key.inspect}"
         @current_color = color_key
         send_data("\x65\x0C#{color_key}\xFF\x00\x00\x00\x00")
       end

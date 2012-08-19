@@ -1,16 +1,16 @@
 module Jenkins
 
   class Monitor < ::Monitor
+    load_credentials :jenkins
+
     attr_reader :status, :activity
 
-    CREDENTAILS = YAML::load( File.open(  File.expand_path(File.dirname(__FILE__) + '../../../config/jenkins_credentials.yml') ) )["setup"]
-
     def initialize(default_poll_interval)
-      @username     = CREDENTAILS["username"]
-      @password     = CREDENTAILS["password"]
-      @url          = CREDENTAILS["url"]
-      @build_name   = CREDENTAILS["build_name"]
-      @port         = (CREDENTAILS["port"] || "80").to_i
+      @username     = credential_for :username
+      @password     = credential_for :password
+      @url          = credential_for :url
+      @build_name   = credential_for :build_name
+      @port         = (credential_for :port || "80").to_i
 
       @http         = Net::HTTP.new(@url, @port)
       @http.use_ssl = true if @port == 443
@@ -24,7 +24,9 @@ module Jenkins
 
     # this gets called from the super class through a timer every 10 seconds
     def poll_now
-      @timer.start
+      puts "<poll jenkins>"
+
+      @timer.start(@default_poll_interval)
 
       Thread.new do
         @http.start() do |http|
