@@ -15,7 +15,7 @@ class HisMastersVoice
 
   WORDS_MEANS_ACTION = {
     "whats up"           => { :status => {} },
-    "how are you"        => { :manual_blink => {:number_of_times => 10, :interval => 0.01, :wait_after_blink => 10.0 } },
+    "how are you"        => { :manual_blink => {:number_of_times => 10, :interval => 0.1, :wait_after_blink => 10.0 } },
     "shut up"            => { :turn_off => {}},
     "red light"          => { :red => {}},
     "green light"        => { :green => {}},

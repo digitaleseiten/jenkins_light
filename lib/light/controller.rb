@@ -15,28 +15,31 @@ module Light
     OFF    = "\x00"
 
     def initialize(default_blink_interval)
-      @blink_power        = 1 # default send power to the light for the blinker
+      @blink_power        = true # default send power to the light for the blinker
       @blink_timer        = Timer.new(default_blink_interval) { timer_blink }
       @blink_timer.start
     end
 
     def manual_blink(user_options = {:number_of_times => 2, :interval => 1.0, :wait_after_blink => 0 })
-      current_power_on = @power_on
-      user_options[:number_of_times].times {|count| turn_off and sleep user_options[:interval] and turn_on and sleep user_options[:interval] }
-      @power_on = current_power_on
+      user_options[:number_of_times].times {|count|
+        turn_off
+        sleep user_options[:interval]
+        turn_on
+        sleep user_options[:interval]
+        }
       sleep user_options[:wait_after_blink]
     end
 
     def timer_blink
       @blink_timer.start(@_blink_interval)
       if @blink_please
-        (@blink_power ^= 1) == 1 ? turn_on : turn_off
+        (@blink_power ^= true)  ? turn_on : turn_off
       end
     end
 
     def blink_interval=(interval)
       # no blinking faster than 10ms please
-      @_blink_interval = interval < 0.01 ? 0 : interval
+      @_blink_interval = (interval < 0.01) ? 0 : interval
     end
 
     # The methods that accept user_options can be used directly
@@ -50,7 +53,7 @@ module Light
     def turn_on(user_options={})
       if !@power_on
         @power_on = true
-        puts "light on"
+        print "light on"
         color_key = @current_color || ORANGE
         send_data("\x65\x0C#{color_key}\xFF\x00\x00\x00\x00")
       end
@@ -58,7 +61,7 @@ module Light
 
     def turn_off(user_options={})
       if @power_on
-        puts "light off"
+        print "light off"
         @power_on = false
         send_data("\x65\x0C#{OFF}\xFF\x00\x00\x00\x00")
       end
@@ -69,7 +72,7 @@ module Light
     # only send data to the light when the color should change
     def light(color_key)
       if color_key && color_key != @current_color
-        puts "light: #{color_key.inspect}"
+        print " <light: #{color_key.inspect}> "
         @current_color = color_key
         send_data("\x65\x0C#{color_key}\xFF\x00\x00\x00\x00")
       end
@@ -84,7 +87,7 @@ module Light
           puts error.message
         end
       else
-        puts "device not found"
+        print " <device not found> "
       end
     end
 

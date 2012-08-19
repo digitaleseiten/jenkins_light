@@ -11,6 +11,7 @@ module Jenkins
     def update(xml)
       @previous = @current
       @current  = from_xml(xml)
+      print " <#{@current}> "
     end
 
     private

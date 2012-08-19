@@ -37,5 +37,4 @@ while true != false
   # a cheap copy of ios timer behaviour
   Timer.tick
   @light_manager.light_the_way
-  print "."
 end

@@ -15,6 +15,9 @@ module Github
 
     def poll_now
       @timer.start(@default_poll_interval)
+
+      print " <#{(@pull_requests || []).length} pull request(s)> "
+
       if @feature_enabled
         Thread.new do
           @pull_requests = github.pull_requests.list @repository_owner, @repository_name, :mime_type => :full
