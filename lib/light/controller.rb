@@ -22,7 +22,7 @@ module Light
 
     def manual_blink(user_options = {:number_of_times => 2, :interval => 1.0 })
       current_power_on = @power_on
-      user_options[:number_of_times].times {|count| light_controller.turn_off and sleep user_options[:interval] and light_controller.turn_on }
+      user_options[:number_of_times].times {|count| light_controller.turn_off and sleep user_options[:interval] and light_controller.turn_on and sleep user_options[:interval] }
       @power_on = current_power_on
     end
 

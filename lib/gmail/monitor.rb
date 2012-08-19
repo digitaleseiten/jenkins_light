@@ -5,11 +5,10 @@ module Gmail
 
     def initialize(default_poll_interval)
       @feature_enabled = credential_for :feature_enabled
-      @pop3_address    = credential_for :pop3_address,    @feature_enabled
-      @pop3_username   = credential_for :pop3_username,   @feature_enabled
-      @pop3_password   = credential_for :pop3_password,   @feature_enabled
-      @pop3_enable_ssl = credential_for :pop3_enable_ssl, @feature_enabled
-#      @reciever_filter = credential_for :reciever_filter, false
+      @pop3_address    = credential_for :pop3_address
+      @pop3_username   = credential_for :pop3_username
+      @pop3_password   = credential_for :pop3_password
+      @pop3_enable_ssl = credential_for :pop3_enable_ssl
       @pop3_port       = (credential_for :pop3_port,      @feature_enabled).to_i
 
       super(default_poll_interval)
@@ -17,48 +16,34 @@ module Gmail
 
     def poll_now
       @timer.start(@default_poll_interval)
-      poll_mail if @feature_enabled
+      poll_mail
     end
 
     private
 
     def poll_mail
+      return unless @feature_enabled
       puts "<poll mail>"
-      puts @feature_enabled.inspect
-      puts @pop3_address.inspect
-      puts @pop3_username.inspect
-      puts @pop3_password.inspect
-      puts @pop3_enable_ssl.inspect
-      puts @pop3_port.inspect
 
-#      Thread.new do
-        begin
-          mail.all.each do |mail|
-            puts "got mail"
-#            puts @reciever_filter.inspect
-#            if @reciever_filter
-#              read_mail = mail.envelope.from.match(Regexp.new(@reciever_filter))
-#            else
-#              read_mail = true
-#            end
-#            puts "read mail: #{read_mail}"
-#            if read_mail
-#              if !(understood = HisMastersVoice.instance.said_this(mail.subject))
-#                respond_with_message_has_no_meaning(mail.envelope.from)
-#              end
-#            end
+      Thread.new do
+        mail.all.each do |email|
+          unless HisMastersVoice.instance.means_anything?(email.subject)
+            respond_with_message_has_no_meaning(email.from)
+          else
+            HisMastersVoice.instance.said_this(email.subject)
           end
-          rescue => error
-            puts error.message
-          end
-#      end
+        end
+      end
     end
 
+    def respond_with_message_has_no_meaning(this_address)
+      puts "responding with WTF to #{this_address.inspect}"
+      return # TODO do this in the next update
+      me = @pop3_username
 
-    def respond_with_message_has_no_meaning(sender)
-      mail = mail.new do
-        from    @pop3_username
-        to      sender
+      email = mail.deliver do
+        from    me
+        to      this_address
         subject 'WTF are you talking about kid?'
         body    HisMastersVoice.instance.help
       end
@@ -69,14 +54,20 @@ module Gmail
     end
 
     def setup_mail_defaults
-      if @feature_enabled
-        Mail.defaults do
-          retriever_method :pop3, :address    => @pop3_address,
-                                  :port       => @pop3_port,
-                                  :user_name  => @pop3_username,
-                                  :password   => @pop3_password,
-                                  :enable_ssl => @pop3_enable_ssl
-        end
+      # for some reason the retriever_method does not get the instance vars set in the hash directly
+      # this is why they are copied into local vars here
+      address    = @pop3_address
+      port       = @pop3_port
+      user_name  = @pop3_username
+      password   = @pop3_password
+      enable_ssl = @pop3_enable_ssl
+
+      Mail.defaults do
+        retriever_method :pop3, :address    => address,
+                                :port       => port,
+                                :user_name  => user_name,
+                                :password   => password,
+                                :enable_ssl => enable_ssl
       end
       Mail
     end

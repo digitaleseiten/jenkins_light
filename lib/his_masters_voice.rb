@@ -14,7 +14,7 @@ class HisMastersVoice
   @@last_said = "what are you doing" # default last message from the user
 
   WORDS_MEANS_ACTION = {
-    "what are you doing" => { :status? => {} },
+    "what are you doing" => { :status => {} },
     "how are you"        => { :manual_blink => {:number_of_times => 10, :interval => 0.01} },
     "shut up"            => { :turn_off => {}},
     "red light"          => { :red => {}},
@@ -31,8 +31,12 @@ class HisMastersVoice
   end
 
   def said_this(message)
-    puts "user said: #{message}"
-    @@last_said = message if means_anything?(message)
+    puts "His Master said: #{message}"
+    @@last_said = message
+  end
+
+  def means_anything?(message)
+    !meaning(message).empty?
   end
 
   # this send the instance calling this methid and action
@@ -47,10 +51,6 @@ class HisMastersVoice
   end
 
   private
-
-  def means_anything?(message)
-    !meaning(message).empty?
-  end
 
   # returns empty array or words and action that match the message
   def meaning(message)

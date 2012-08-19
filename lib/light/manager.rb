@@ -31,7 +31,7 @@ module Light
       HisMastersVoice.instance.tell_me(self)
     end
 
-    def status?(options={})
+    def status(options={})
       # get a snap shot of the jenkins here as we dont want it to change while we are working things out
       jenkins_status = @jenkins_monitor.status.current
       # set the light color, if we dont have a color for the status then turn the light off
