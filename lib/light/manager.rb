@@ -7,7 +7,7 @@ module Light
 
     GITHUB_DEFAULT_POLL_INTERVAL = 10 # every 10 seconds
     JENKINS_DEFAULT_POLL_INTERVAL = 10 # every 10 seconds
-    GMAIL_DEFAULT_POLL_INTERVAL = 60 # every 1 mins
+    GMAIL_DEFAULT_POLL_INTERVAL = 30 # every 30 seconds
 
     STATUS_LIGHT_MAPPING = {
       "aborted"  => "turn_off",
@@ -27,10 +27,17 @@ module Light
       @gmail_monitor    = Gmail::Monitor.new(GMAIL_DEFAULT_POLL_INTERVAL)
     end
 
+    #find out what the user wants us to do
+    #his masters voice will call the methods based on what the user last told us
     def light_the_way
       HisMastersVoice.instance.tell_me(self)
     end
 
+    # This is the normal mode of operation, 
+    # check out what jenkins is doing, 
+    # check for any pzll requests in git hub
+    # see if we got mail with new instructions
+    # and put the right colors on the light and blink it if required
     def status(options={})
       # get a snap shot of the jenkins here as we dont want it to change while we are working things out
       jenkins_status = @jenkins_monitor.status.current
