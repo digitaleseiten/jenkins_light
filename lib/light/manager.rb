@@ -3,7 +3,7 @@ module Light
   class Manager
     GITHUB_DEFAULT_POLL_INTERVAL = 10 # every 10 seconds
     JENKINS_DEFAULT_POLL_INTERVAL = 10 # every 10 seconds
-    GMAIL_DEFAULT_POLL_INTERVAL = 10 # every 1 mins
+    GMAIL_DEFAULT_POLL_INTERVAL = 60 # every 1 mins
 
     STATUS_LIGHT_MAPPING = {
       "aborted"  => "turn_off",
