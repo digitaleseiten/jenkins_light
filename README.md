@@ -7,7 +7,6 @@ Changes the status of a Delcom USB light depending on the status of a
 Jenkins build and when pull requests are pending for a repository.
 
 The light statuses:
-- Off until the data from Jenkins arrives for the first time (only happens for about the first 10 seconds after starting the jenkins_light program)
 - Off when you abort the build
 - Green when the last build was a sucess
 - Blinky Green when a pull request is pending
@@ -18,6 +17,18 @@ The light statuses:
 Some times you want the light to turn off (maybe because it is driving you crazy blinking red since the last build failed),
 of course you could just unplug it, but where is the fun in that - so instead, just send it either an email with
 shut up or wake up in the subject to turn it off, or back on again.
+
+Here are some commands that you can send it via a message
+
+"what are you doing" - lets it get on with doing what it should be doing
+"how are you"        - causes a fast succession of 10 blinks to tell you that it is a linve
+"shut up"            - turns off the light and stops doing anything else that might annoy you
+"red light"          - turns on the red light
+"green light"        - turns on the green light,
+"blue light"         - turns on the blue light,
+"orange light"       - turns on the red and green light
+"turn off"           - turns off the light
+"turn on"            - turns on the light with the last know color
 
 Installation
 ============
