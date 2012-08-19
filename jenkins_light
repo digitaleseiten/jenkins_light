@@ -11,6 +11,7 @@ require 'open-uri'
 require 'net/http'
 require "net/https"
 require 'yaml'
+require 'forwardable'
 
 PROJECT_ROOT = File.expand_path(File.dirname(__FILE__))
 
@@ -19,20 +20,22 @@ require PROJECT_ROOT + '/lib/timer'
 require PROJECT_ROOT + '/lib/openssl_patch'
 require PROJECT_ROOT + '/lib/monitor'
 require PROJECT_ROOT + '/lib/gmail/monitor'
+require PROJECT_ROOT + '/lib/github/monitor'
 require PROJECT_ROOT + '/lib/jenkins/monitor'
+require PROJECT_ROOT + '/lib/light/manager'
+require PROJECT_ROOT + '/lib/light/controller'
 require PROJECT_ROOT + '/lib/jenkins/status'
 require PROJECT_ROOT + '/lib/jenkins/activity'
-require PROJECT_ROOT + '/lib/github/monitor'
-require PROJECT_ROOT + '/lib/light/controller'
-require PROJECT_ROOT + '/lib/light/manager'
 
 @light_manager = Light::Manager.new
-HisMastersVoice.instance.now_wants_me_to('wake up')
+# just speaking for the user here i.e. we want the software to behave as if the
+# the user asked this
+HisMastersVoice.instance.said_this('what are you doing')
 
 while true != false
   # this makes all registered timers work
   # a cheap copy of ios timer behaviour
   Timer.tick
-  @light_manager.show_status
+  @light_manager.light_the_way
   print "."
 end
