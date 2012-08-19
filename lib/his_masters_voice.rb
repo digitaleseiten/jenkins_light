@@ -14,8 +14,8 @@ class HisMastersVoice
   @@last_said = "what are you doing" # default last message from the user
 
   WORDS_MEANS_ACTION = {
-    "what are you doing" => { :status => {} },
-    "how are you"        => { :manual_blink => {:number_of_times => 10, :interval => 0.01} },
+    "whats up"           => { :status => {} },
+    "how are you"        => { :manual_blink => {:number_of_times => 10, :interval => 0.01, :wait_after_blink => 10.0 } },
     "shut up"            => { :turn_off => {}},
     "red light"          => { :red => {}},
     "green light"        => { :green => {}},

@@ -30,7 +30,7 @@ require PROJECT_ROOT + '/lib/jenkins/activity'
 @light_manager = Light::Manager.new
 # just speaking for the user here i.e. we want the software to behave as if the
 # the user asked this
-HisMastersVoice.instance.said_this('what are you doing')
+HisMastersVoice.instance.said_this('whats up')
 
 while true != false
   # this makes all registered timers work

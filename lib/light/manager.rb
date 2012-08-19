@@ -7,7 +7,7 @@ module Light
 
     GITHUB_DEFAULT_POLL_INTERVAL = 10 # every 10 seconds
     JENKINS_DEFAULT_POLL_INTERVAL = 10 # every 10 seconds
-    GMAIL_DEFAULT_POLL_INTERVAL = 30 # every 30 seconds
+    GMAIL_DEFAULT_POLL_INTERVAL = 60 # every 60 seconds
 
     STATUS_LIGHT_MAPPING = {
       "aborted"  => "turn_off",
@@ -33,8 +33,8 @@ module Light
       HisMastersVoice.instance.tell_me(self)
     end
 
-    # This is the normal mode of operation, 
-    # check out what jenkins is doing, 
+    # This is the normal mode of operation,
+    # check out what jenkins is doing,
     # check for any pzll requests in git hub
     # see if we got mail with new instructions
     # and put the right colors on the light and blink it if required
