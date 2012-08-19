@@ -16,7 +16,7 @@ The light statuses:
 - Orange when is does now understand the Jenkins status (unlikely but possible)
 
 Some times you want the light to turn off (maybe because it is driving you crazy blinking red since the last build failed),
-of course you could just unplug it, bit where is the fun in that - so instead, just send it either an email with
+of course you could just unplug it, but where is the fun in that - so instead, just send it either an email with
 shut up or wake up in the subject to turn it off, or back on again.
 
 Installation
