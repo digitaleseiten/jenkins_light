@@ -18,9 +18,7 @@ class Monitor
 
   def credential_for(attribute, compulsory=true)
     owner = self.class.name.downcase.split("::").first
-    x = @@credentials[owner.to_sym]["#{attribute}"] || (compulsory ? (raise "#{attribute} missing please check your #{self.class.name.downcase}_credentials.yml file") : nil)
-    puts x
-    x
+    @@credentials[owner.to_sym]["#{attribute}"] || (compulsory ? (raise "#{attribute} missing please check your #{self.class.name.downcase}_credentials.yml file") : nil)
   end
 
 end
