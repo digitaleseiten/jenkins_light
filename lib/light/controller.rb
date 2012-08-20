@@ -83,7 +83,7 @@ module Light
         begin
           transmit_data = DELCOM_TRANSMISSION_DATA.merge(:dataOut => dataOut, :timeout => 1000)
           device.open {|device_handle| usb_control_msg(transmit_data[:bmRequestType], transmit_data[:bRequest], transmit_data[:wValue], transmit_data[:wIndex], transmit_data[:dataOut], transmit_data[:timeout]) }
-        rescue => error.message
+        rescue => error
           puts error.message
         end
       else
