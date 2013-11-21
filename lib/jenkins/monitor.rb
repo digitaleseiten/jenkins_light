@@ -8,11 +8,12 @@ module Jenkins
     def initialize(default_poll_interval)
       @username     = credential_for :username
       @password     = credential_for :password
-      @url          = credential_for :url
-      @build_name   = credential_for :build_name
+      @host          = credential_for :host
       @port         = (credential_for :port || "80").to_i
+      @path         = (credential_for :path || "/")
+      @build_name   = credential_for :build_name
 
-      @http         = Net::HTTP.new(@url, @port)
+      @http         = Net::HTTP.new(@host, @port)
       @http.use_ssl = true if @port == 443
 
       @status       = Status.new(@build_name)
@@ -28,11 +29,22 @@ module Jenkins
 
       Thread.new do
         @http.start() do |http|
-          request = Net::HTTP::Get.new('/rssLatest')
-          request.basic_auth @username, @password
-          response = http.request(request)
-          @status.update(REXML::Document.new response.body)
-          @activity.update(@status.previous, @status.current)
+          begin
+            request = Net::HTTP::Get.new("#{@path}rssLatest")
+            request.basic_auth @username, @password
+            response = http.request(request)
+
+            # Raises an HTTP error if the response is not 2xx (success).
+            response.value
+
+            @status.update(REXML::Document.new response.body)
+            @activity.update(@status.previous, @status.current)
+
+          rescue => e
+            puts "Unable to poll #{http.inspect}: #{e.inspect}"
+            puts e.backtrace
+
+          end
         end
       end
     end

@@ -5,6 +5,7 @@ module Jenkins
 
     def initialize(build_name)
       @previous = "unknown"
+      @current = "unknown"
       @build_name = build_name
     end
 
