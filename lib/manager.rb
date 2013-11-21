@@ -44,11 +44,11 @@ class Manager
     # set the blink interval
     @light_controller.blink_interval = current_blink_interval
     # make it blink if jenkins is building or broken, or there is a pull request pending
-    @light_controller.blink_please = (jenkins_status == "building" || jenkins_status == "broken") || (jenkins_status == "stable" && @github_monitor.pull_requests?)
+    @light_controller.blink_please = (@jenkins_monitor.blink_while_building && jenkins_status == "building") || jenkins_status == "broken" || (jenkins_status == "stable" && @github_monitor.pull_requests?)
     # do nothing for 10 miliseconds
     # if we dont do this, the the software will grap all the cpu capacity it can get
     # just to go round in a loop which mostly does nothing.
-    sleep 0.01
+    sleep 0.1
   end
 
   private
