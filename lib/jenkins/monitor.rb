@@ -12,6 +12,7 @@ module Jenkins
       @port         = (credential_for :port || "80").to_i
       @path         = (credential_for :path || "/")
       @build_name   = credential_for :build_name
+      @blink_while_building = (credential_for :blink_while_building || true)
 
       @http         = Net::HTTP.new(@host, @port)
       @http.use_ssl = true if @port == 443
@@ -21,6 +22,10 @@ module Jenkins
       @timer        = Timer.new(1.0) { @activity.update }
 
       super(default_poll_interval)
+    end
+
+    def blink_while_building
+      @blink_while_building
     end
 
     # this gets called from the super class through a timer every 10 seconds
