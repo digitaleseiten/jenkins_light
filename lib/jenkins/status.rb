@@ -12,7 +12,6 @@ module Jenkins
     def update(xml)
       @previous = @current
       @current  = from_xml(xml)
-      print " <#{@current}> "
     end
 
     private
@@ -20,32 +19,71 @@ module Jenkins
     # returns a string "(stable)" or "(failed)" or "(?)" or ""
     def from_xml(xml)
       parsed_status = "unknown"
+      jenkins_status = Hash.new
 
       if xml
-        build_names = []
-        xml.elements.each("feed/entry/title") {|entry| build_names << entry.text}
+        xml.elements.each("feed/entry/title") do |entry|
+          matchdata = entry.text.match(/^(.*) #[0-9]+ (\(.+\))/)
+          raise "Failed to match build data #{entry.text}" if matchdata.nil? or matchdata.length != 3
 
-        build_master = build_names.find {|build_name| build_name.include?(@build_name) }
-        parsed_status = build_master.match(/\(.+\)/).to_s
+          jenkins_status[matchdata[1]] = matchdata[2]
+        end
       end
 
-      case parsed_status
-      when "(stable)"
-        "stable"
-      when "(back to normal)"
-        "stable"
-      when "(?)"
-        "building"
-      when "(aborted)"
-        "aborted"
-      when /broken/
-        "broken"
-      when "unknown"
-        "unknown"
-      else
-        "failed"
+      build_status = []
+
+      @build_name.each do |build|
+        status = jenkins_status[build] || "unknown"
+        build_status << [build, status]
       end
 
+      build_status.sort_by! {|status| to_precedence status[1]}
+
+      parsed_status = build_status[0][1] if build_status.length > 0
+
+      overall_status = to_status parsed_status
+
+      print " <#{overall_status}: " + build_status.map{|status| "#{status[0]}=#{to_status(status[1])}"}.join(", ") + "> "
+
+      overall_status
+    end
+
+    def to_status(jenkins_status)
+      case jenkins_status
+        when "(stable)"
+          "stable"
+        when "(back to normal)"
+          "stable"
+        when "(?)"
+          "building"
+        when "(aborted)"
+          "aborted"
+        when /broken/
+          "broken"
+        when "unknown"
+          "unknown"
+        else
+          "failed"
+        end
+    end
+
+    def to_precedence(jenkins_status)
+      case jenkins_status
+        when "(stable)"
+          100
+        when "(back to normal)"
+          80
+        when "(?)"
+          40
+        when "(aborted)"
+          50
+        when /broken/
+          10
+        when "unknown"
+          0
+        else
+          20
+        end
     end
 
   end
