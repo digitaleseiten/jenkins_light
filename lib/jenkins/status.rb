@@ -74,7 +74,7 @@ module Jenkins
         when "(back to normal)"
           80
         when "(?)"
-          40
+          110
         when "(aborted)"
           50
         when /broken/
